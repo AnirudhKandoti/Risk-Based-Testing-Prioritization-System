@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block content %}
+<h1 class="text-2xl font-semibold mb-4">Module Priorities</h1>
+<div class="grid gap-3">
+  {% for it in items %}
+  <a href="/ui/modules/{{ it.module_name }}" class="block bg-white rounded-xl p-4 shadow hover:shadow-md transition">
+    <div class="flex justify-between items-center">
+      <div>
+        <div class="font-medium">{{ it.module_name }}</div>
+        <div class="text-sm text-slate-600">{{ it.band }} risk ·
+          Top drivers:
+          {% for k, v in it.contributions|dictsort(by='value', reverse=True)[:3] %}
+            <span class="inline-block bg-slate-100 px-2 py-0.5 rounded">{{ k }} ({{ v }})</span>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="text-xl font-semibold">{{ "%.1f"|format(it.score) }}</div>
+    </div>
+    <div class="mt-2 text-sm text-slate-600">
+      {{ it.reasons|join(" ") }}
+    </div>
+  </a>
+  {% else %}
+  <div class="text-slate-600">No modules yet. Post telemetry to <code>/ingest/telemetry</code> or run <code>make load-sample</code>.</div>
+  {% endfor %}
+</div>
+{% endblock %}

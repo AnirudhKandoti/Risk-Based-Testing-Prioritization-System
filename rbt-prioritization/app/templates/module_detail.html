@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block content %}
+<a href="/" class="text-sm text-blue-700">&larr; Back</a>
+<h1 class="text-2xl font-semibold mt-2 mb-2">{{ module.name }}</h1>
+<div class="grid md:grid-cols-3 gap-4">
+  <div class="bg-white rounded-xl p-4 shadow">
+    <div class="text-sm text-slate-600">Risk Score</div>
+    <div class="text-3xl font-bold">{{ "%.1f"|format(score) }}</div>
+    <div class="mt-1 text-slate-700">{{ band }} risk</div>
+  </div>
+  <div class="bg-white rounded-xl p-4 shadow md:col-span-2">
+    <div class="font-medium mb-2">Top Contributions</div>
+    <ul class="list-disc pl-5 text-sm">
+      {% for k in ranked_contributions[:5] %}
+      <li><span class="font-mono">{{ k }}</span>: {{ contributions[k] }}</li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+
+<div class="bg-white rounded-xl p-4 shadow mt-4">
+  <div class="font-medium mb-2">Reasons</div>
+  <ul class="list-disc pl-5 text-sm">
+    {% for r in reasons %}
+    <li>{{ r }}</li>
+    {% endfor %}
+  </ul>
+</div>
+
+<div class="bg-white rounded-xl p-4 shadow mt-4">
+  <div class="font-medium mb-2">Feature Averages</div>
+  <table class="w-full text-sm">
+    <thead>
+      <tr class="text-left text-slate-500">
+        <th class="py-1">Feature</th>
+        <th class="py-1">Value</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for k, v in features.items()|sort %}
+      <tr class="border-t">
+        <td class="py-1 font-mono">{{ k }}</td>
+        <td class="py-1">{{ "%.3f"|format(v) }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}
